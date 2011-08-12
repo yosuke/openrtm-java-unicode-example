@@ -1,4 +1,4 @@
-package RTMExamples.SimpleIO;
+package SimpleIO;
 
 
 import jp.go.aist.rtm.RTC.Manager;

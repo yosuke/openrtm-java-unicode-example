@@ -1,4 +1,4 @@
-package RTMExamples.SimpleIO;
+package SimpleIO;
 
 
 import java.io.BufferedReader;
@@ -18,7 +18,7 @@ import jp.go.aist.rtm.RTC.port.ConnectorDataListenerType;
 import jp.go.aist.rtm.RTC.port.ConnectorListenerType;
 import jp.go.aist.rtm.RTC.util.DataRef;
 import RTC.ReturnCode_t;
-import RTC.TimedLong;
+import RTC.TimedString;
 
 import org.omg.CORBA.portable.OutputStream;
 
@@ -27,9 +27,9 @@ public class ConsoleInImpl extends DataFlowComponentBase {
     public ConsoleInImpl(Manager manager) {
         super(manager);
         // <rtc-template block="initializer">
-        m_out_val = new TimedLong(new RTC.Time(0,0),0);
-        m_out = new DataRef<TimedLong>(m_out_val);
-        m_outOut = new OutPort<TimedLong>("out", m_out);
+        m_out_val = new TimedString(new RTC.Time(0,0),"");
+        m_out = new DataRef<TimedString>(m_out_val);
+        m_outOut = new OutPort<TimedString>("out", m_out);
         // </rtc-template>
 
         // Registration: InPort/OutPort/Service
@@ -39,7 +39,7 @@ public class ConsoleInImpl extends DataFlowComponentBase {
         // Set OutPort buffer
 /*
         try {
-//            registerOutPort(TimedLong.class, "out", m_outOut);  //v042
+//            registerOutPort(TimedString.class, "out", m_outOut);  //v042
             registerOutPort("out", m_outOut);
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,15 +140,12 @@ public class ConsoleInImpl extends DataFlowComponentBase {
     // former rtc_active_do()
     @Override
     protected ReturnCode_t onExecute(int ec_id) {
-        System.out.println("Please input number: ");
+        System.out.println("Please input text: ");
         BufferedReader buff = new BufferedReader(new InputStreamReader( System.in ));
         try {
-            m_out_val.data = Integer.parseInt(buff.readLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Input number Error!");
-//            e.printStackTrace();
+            m_out_val.data = buff.readLine();
         } catch (IOException e) {
-            System.out.println("Input number Error!");
+            System.out.println("Input Error!");
 //            e.printStackTrace();
         }
         System.out.println("Sending to subscriber: "  + m_out_val.data);
@@ -199,9 +196,9 @@ public class ConsoleInImpl extends DataFlowComponentBase {
 
     // DataOutPort declaration
     // <rtc-template block="outport_declare">
-    protected TimedLong m_out_val;
-    protected DataRef<TimedLong> m_out;
-    protected OutPort<TimedLong> m_outOut;
+    protected TimedString m_out_val;
+    protected DataRef<TimedString> m_out;
+    protected OutPort<TimedString> m_outOut;
     
     // </rtc-template>
 
@@ -220,14 +217,14 @@ public class ConsoleInImpl extends DataFlowComponentBase {
     
     // </rtc-template>
 
-    class DataListener extends ConnectorDataListenerT<TimedLong>{
+    class DataListener extends ConnectorDataListenerT<TimedString>{
         public DataListener(final String name){
-            super(TimedLong.class);
+            super(TimedString.class);
             m_name = name;
         }
 
         public void operator(final ConnectorBase.ConnectorInfo arg,
-                               final TimedLong data) {
+                               final TimedString data) {
             ConnectorBase.ConnectorInfo info =(ConnectorBase.ConnectorInfo)arg;
             System.out.println("------------------------------");
             System.out.println("Listener:       "+m_name);

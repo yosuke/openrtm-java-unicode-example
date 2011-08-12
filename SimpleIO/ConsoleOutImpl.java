@@ -1,10 +1,10 @@
-package RTMExamples.SimpleIO;
+package SimpleIO;
 
 import java.util.Observer;
 import java.util.Observable;
 
 import RTC.ReturnCode_t;
-import RTC.TimedLong;
+import RTC.TimedString;
 import jp.go.aist.rtm.RTC.DataFlowComponentBase;
 import jp.go.aist.rtm.RTC.Manager;
 import jp.go.aist.rtm.RTC.port.InPort;
@@ -22,9 +22,9 @@ public class ConsoleOutImpl  extends DataFlowComponentBase {
     public ConsoleOutImpl(Manager manager) {
         super(manager);
         // <rtc-template block="initializer">
-        m_in_val = new TimedLong();
-        m_in = new DataRef<TimedLong>(m_in_val);
-        m_inIn = new InPort<TimedLong>("in", m_in);
+        m_in_val = new TimedString();
+        m_in = new DataRef<TimedString>(m_in_val);
+        m_inIn = new InPort<TimedString>("in", m_in);
         // </rtc-template>
 
         // Registration: InPort/OutPort/Service
@@ -32,7 +32,7 @@ public class ConsoleOutImpl  extends DataFlowComponentBase {
 /*
         // Set InPort buffers
         try {
-//            registerInPort(TimedLong.class, "in", m_inIn);  //v042
+//            registerInPort(TimedString.class, "in", m_inIn);  //v042
             registerInPort("in", m_inIn);
         } catch (Exception e) {
             e.printStackTrace();
@@ -184,9 +184,9 @@ public class ConsoleOutImpl  extends DataFlowComponentBase {
 //
     // DataInPort declaration
     // <rtc-template block="inport_declare">
-    protected TimedLong m_in_val;
-    protected DataRef<TimedLong> m_in;
-    protected InPort<TimedLong> m_inIn;
+    protected TimedString m_in_val;
+    protected DataRef<TimedString> m_in;
+    protected InPort<TimedString> m_inIn;
     
     // </rtc-template>
 
@@ -210,14 +210,14 @@ public class ConsoleOutImpl  extends DataFlowComponentBase {
     
     // </rtc-template>
 
-    class DataListener extends ConnectorDataListenerT<TimedLong>{
+    class DataListener extends ConnectorDataListenerT<TimedString>{
         public DataListener(final String name){
-            super(TimedLong.class);
+            super(TimedString.class);
             m_name = name;
         }
 
         public void operator(final ConnectorBase.ConnectorInfo arg,
-                               final TimedLong data) {
+                               final TimedString data) {
             ConnectorBase.ConnectorInfo info =(ConnectorBase.ConnectorInfo)arg;
             System.out.println("------------------------------");
             System.out.println("Listener:       "+m_name);
