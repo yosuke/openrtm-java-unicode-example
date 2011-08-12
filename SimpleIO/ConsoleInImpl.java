@@ -143,7 +143,7 @@ public class ConsoleInImpl extends DataFlowComponentBase {
         System.out.println("Please input text: ");
         BufferedReader buff = new BufferedReader(new InputStreamReader( System.in ));
         try {
-            m_out_val.data = buff.readLine();
+            m_out_val.data = new String(buff.readLine().getBytes("UTF-8"), "ISO-8859-1");
         } catch (IOException e) {
             System.out.println("Input Error!");
 //            e.printStackTrace();

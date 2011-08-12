@@ -2,6 +2,7 @@ package SimpleIO;
 
 import java.util.Observer;
 import java.util.Observable;
+import java.io.UnsupportedEncodingException;
 
 import RTC.ReturnCode_t;
 import RTC.TimedString;
@@ -134,8 +135,12 @@ public class ConsoleOutImpl  extends DataFlowComponentBase {
     protected ReturnCode_t onExecute(int ec_id) {
         if( m_inIn.isNew() ) {
             m_inIn.read();
-            System.out.print( "Received: " + m_in.v.data + " " );
-            System.out.print( "TimeStamp: " + m_in.v.tm.sec + "[s] " );
+	    try {
+		System.out.print( "Received: " + new String(m_in.v.data.getBytes("ISO-8859-1"), "UTF-8") + " " );
+	    } catch (UnsupportedEncodingException e) {
+		e.printStackTrace();
+	    }
+	    System.out.print( "TimeStamp: " + m_in.v.tm.sec + "[s] " );
             System.out.println( m_in.v.tm.nsec + "[ns]" );
           }
         try {
@@ -225,7 +230,11 @@ public class ConsoleOutImpl  extends DataFlowComponentBase {
             System.out.println("Profile::id:    "+info.id);
 //            System.out.println("Profile::properties: ");
 //            System.out.println(info.properties);
-            System.out.println("Data:           "+data.data);
+	    try {
+		System.out.println("Data:           "+new String(data.data.getBytes("ISO-8859-1"), "UTF-8"));
+	    } catch (UnsupportedEncodingException e) {
+		e.printStackTrace();
+	    }
             System.out.println("------------------------------");
         }
         public String m_name;
